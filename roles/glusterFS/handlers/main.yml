@@ -1,0 +1,21 @@
+---
+# handlers file for glusterFS
+- name: restart glusterd
+  service:
+    name: glusterd
+    state: restarted
+
+- name: restart nfs-ganesha
+  service:
+    name: nfs-ganesha
+    state: restarted
+
+- name: restart haproxy
+  service:
+    name: haproxy
+    state: restarted
+
+- name: restart keepalived
+  service:
+    name: keepalived
+    state: restarted

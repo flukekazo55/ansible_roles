@@ -1,0 +1,4 @@
+---
+# tasks file for glusterFS
+- import_tasks: install_gluster.yaml
+- import_tasks: install_haproxy.yaml

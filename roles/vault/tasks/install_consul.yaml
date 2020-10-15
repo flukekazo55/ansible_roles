@@ -1,0 +1,55 @@
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Wait for APT Lock
+  shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+
+- name: Remove apt lock file
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: yes
+
+- name: Install zip
+  apt:
+    name: 
+    - unzip 
+    - zip
+
+- name: Download repo consul
+  shell: wget https://releases.hashicorp.com/consul/1.8.3/consul_1.8.3_linux_amd64.zip
+
+- name: Unzip repo consul
+  shell: sudo unzip consul_1.8.3_linux_amd64.zip
+
+- name: mv consul /usr/bin
+  shell: sudo mv consul /usr/bin
+
+- name: Config Consul service
+  copy:
+    src: files/consul.service
+    dest: /etc/systemd/system/consul.service
+
+- name: mkdir /etc/consul.d/
+  shell: mkdir /etc/consul.d/
+
+- name: Config ui json
+  copy:
+    src: files/ui.json
+    dest: /etc/consul.d/ui.json
+
+- name: Daemon-reload
+  shell:  systemctl daemon-reload
+
+- name: Enabled consul
+  service:
+    name: consul
+    state: restarted
+    enabled: yes

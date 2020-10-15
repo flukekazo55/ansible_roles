@@ -1,0 +1,80 @@
+---
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Wait for APT Lock
+  shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+
+- name: Remove apt lock file
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: yes
+
+- name: Install software-properties-common
+  apt: 
+    name: software-properties-common
+
+- name: Add repo
+  shell: wget -O- https://download.gluster.org/pub/gluster/glusterfs/8/rsa.pub | apt-key add - && sudo add-apt-repository ppa:gluster/glusterfs-8 -y
+
+- name: Install glusterfs-server
+  apt:
+    name: glusterfs-server
+
+- name: Enabled GlusterFS
+  service:
+    name: glusterd
+    state: started
+    enabled: yes
+
+- name: Glusterfs peer glusterfs-node2
+  shell: gluster peer probe 192.168.60.39
+
+- name: Glusterfs create volume directory 
+  shell: mkdir /test_mnt
+
+- name: Glusterfs create volume
+  shell: gluster volume create test_volume replica 2 transport tcp 192.168.60.38:/test_mnt 192.168.60.39:/test_mnt force
+  when: ansible_ssh_host=="192.168.60.38"
+
+- name: Glusterfs start volume
+  shell: gluster volume start test_volume
+  when: ansible_ssh_host=="192.168.60.38"
+
+- name : Glusterfs set volume nfs_disabled 
+  shell: gluster volume set test_volume nfs.disable on
+
+- name: Install Ganesha
+  apt:
+    name: nfs-ganesha-gluster
+
+- name: Enabled nfs-ganesha
+  service:
+    name: nfs-ganesha
+    state: started
+    enabled: yes
+
+- name: Backup Ganesha config
+  shell: mv /etc/ganesha/ganesha.conf /etc/ganesha/ganesha.conf.org
+
+- name: Change ganesha.conf
+  copy:
+    src: files/gluster1.conf
+    dest: /etc/ganesha/ganesha.conf
+  when: ansible_ssh_host=="192.168.60.38"
+  notify: restart nfs-ganesha
+
+- name: Change ganesha.conf
+  copy:
+    src: files/gluster2.conf
+    dest: /etc/ganesha/ganesha.conf
+  when: ansible_ssh_host=="192.168.60.39"  
+  notify: restart nfs-ganesha

@@ -1,0 +1,28 @@
+---
+- name: Install Logstash 
+  apt:
+    name: logstash
+
+- name: Add 02-beats-input.conf
+  copy:
+    src: files/02-beats-input.conf
+    dest: /etc/logstash/conf.d/
+
+- name: Add 10-syslog-filter.conf
+  copy:
+    src: files/10-syslog-filter.conf
+    dest: /etc/logstash/conf.d/
+
+- name: Add 30-elasticsearch-output.connf
+  copy:
+    src: files/30-elasticsearch-output.conf
+    dest: /etc/logstash/conf.d/
+
+- name: sudo -u logstash /usr/share/logstash/bin/logstash --path.settings /etc/logstash -t
+  shell: sudo -u logstash /usr/share/logstash/bin/logstash --path.settings /etc/logstash -t
+
+- name: stop logstash
+  service:
+    name: logstash
+    state: stopped
+    # enabled: true

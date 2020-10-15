@@ -1,0 +1,58 @@
+---
+# tasks file for roles/mongodb
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Wait for APT Lock
+  shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+
+- name: Remove apt lock file
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: yes
+
+- name: Install MongoDB
+  apt: 
+    name: 
+     - mongodb
+     - python3-pip
+
+- name: Enable mongodb
+  service:
+    name: mongodb
+    state: started
+    enabled: true
+
+- name: Change Config Mongo
+  copy:
+    src: files/mongodb.conf
+    dest: /etc/mongodb.conf
+  notify: restart mongodb
+
+- name: Install pymongo
+  shell: pip3 install pymongo
+
+- name: Create user with password .
+  community.mongodb.mongodb_user:
+    database: admin
+    name: admin
+    password: 2508
+    roles: root
+    state: present
+
+- name: Change Config Mongo Service
+  copy:
+    src: files/mongodb.service
+    dest: /lib/systemd/system/mongodb.service
+
+- name: Systemctl daemon-reload
+  shell: systemctl daemon-reload
+  notify: restart mongodb

@@ -1,0 +1,4 @@
+---
+# tasks file for roles/vault
+- import_tasks: install_consul.yaml
+- import_tasks: install_vault.yaml

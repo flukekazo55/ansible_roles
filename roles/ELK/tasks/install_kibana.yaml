@@ -1,0 +1,20 @@
+---
+- name: Install Kibana 
+  apt:
+    name: kibana
+
+- name: stop kibana
+  service:
+    name: kibana
+    state: stopped
+    # enabled: true
+
+# - name: Change Config Nginx
+#   copy:
+#     src: files/default
+#     dest: /etc/nginx/sites-available/ 
+
+# - name: restart nginx
+#   service:
+#     name: nginx
+#     state: restarted

@@ -1,0 +1,46 @@
+---
+- name: Download Elasticsearch Repo
+  shell: wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+
+- name: Add Elasticsearch Repo
+  shell: echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+
+- name: Add Elasticsearch Repo
+  shell: echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Wait for APT Lock
+  shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+
+- name: Remove apt lock file
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
+# - name: Upgrade all packages to the latest version
+#   apt:
+#     name: "*"
+#     state: latest
+#     force_apt_get: yes
+
+- name: Install Elasticsearch
+  apt:
+    name: elasticsearch 
+
+- name: Change Config elasticsearch
+  copy:
+    src: files/elasticsearch.yml
+    dest: /etc/elasticsearch/elasticsearch.yml
+
+- name: start elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+    enabled: true
+
+# - name: curl -X GET "localhost:9200" 
+#   shell: curl -X GET "localhost:9200" 

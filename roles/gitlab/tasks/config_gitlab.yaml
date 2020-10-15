@@ -1,0 +1,8 @@
+---
+- name: Config gitlab.rb
+  copy:
+    src: files/gitlab.rb
+    dest: /etc/gitlab/
+
+- name: Reconfigure gitlab
+  shell: sudo gitlab-ctl reconfigure

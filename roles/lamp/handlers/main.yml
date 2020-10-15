@@ -1,0 +1,32 @@
+---
+# handlers file for lamp
+- name: start apache2
+  service:
+    name: apache2
+    state: started
+
+- name: stop apache2
+  service:
+    name: apache2
+    state: stoped
+
+- name: restart apache2
+  service:
+    name: apache2
+    state: restarted
+
+- name: start mariadb
+  service:
+    name: mariadb
+    state: started
+
+- name: stop mariadb
+  service:
+    name: mariadb
+    state: stoped
+
+- name: restart mariadb
+  service:
+    name: mariadb
+    state: restarted
+

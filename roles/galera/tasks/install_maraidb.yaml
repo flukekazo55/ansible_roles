@@ -1,0 +1,45 @@
+---
+- name: Add repo
+  shell: sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+
+- name: Add repo (2)
+  shell: sudo add-apt-repository 'deb [arch=amd64] http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.4/ubuntu bionic main'
+
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Wait for APT Lock
+  shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+
+- name: Remove apt lock file
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: yes
+
+- name: Install mariadb
+  apt: 
+    name: 
+    - mariadb-server
+    - python3-pymysql
+
+
+- name: start mysql
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: set root password
+  shell: sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '2508';"
+
+- name: Install rsync
+  apt: 
+    name: rsync

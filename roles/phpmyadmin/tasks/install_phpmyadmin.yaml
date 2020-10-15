@@ -1,0 +1,71 @@
+---
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Remove apt lock file
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: yes
+
+- name: debconf for pma
+  debconf: 
+    name: phpmyadmin 
+    question: 'phpmyadmin/dbconfig-install' 
+    value: 'true' 
+    vtype: 'boolean'
+
+- name: debconf for pma
+  debconf: 
+    name: phpmyadmin 
+    question: 'phpmyadmin/app-password-confirm' 
+    value: '2508' 
+    vtype: 'password'
+
+- name: debconf for pma
+  debconf: 
+    name: phpmyadmin 
+    question: 'phpmyadmin/mysql/admin-pass' 
+    value: '2508' 
+    vtype: 'password'
+
+- name: debconf for pma
+  debconf: 
+    name: phpmyadmin 
+    question: 'phpmyadmin/mysql/app-pass' 
+    value: '2508' 
+    vtype: 'password'
+
+- name: debconf for pma
+  debconf: 
+    name: phpmyadmin 
+    question: 'phpmyadmin/reconfigure-webserver' 
+    value: '' 
+    vtype: 'multiselect'
+
+- name: install pma
+  apt: 
+    pkg: phpmyadmin 
+    state: present
+
+- name: configure site
+  file: 
+    path: /var/www/phpmyadmin 
+    src: /usr/share/phpmyadmin 
+    state: link
+
+- name: Include /etc/phpmyadmin/apache.conf
+  shell: echo "Include /etc/phpmyadmin/apache.conf" >> /etc/apache2/apache2.conf
+
+# - name: Config mysql_native_password
+#   shell: mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '2508';"
+
+- name: Config FLUSH PRIVILEGES
+  shell: mysql -u root -p2508 -e "FLUSH PRIVILEGES;"

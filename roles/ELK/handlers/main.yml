@@ -1,0 +1,46 @@
+---
+# handlers file for roles/ELK
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+
+- name: stop nginx
+  service:
+    name: nginx
+    state: stoped
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: start elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+
+- name: stop elasticsearch
+  service:
+    name: elasticsearch
+    state: stoped
+
+- name: restart elasticsearch
+  service:
+    name: elasticsearch
+    state: restarted
+
+- name: start kibana
+  service:
+    name: kibana
+    state: started
+
+- name: stop kibana
+  service:
+    name: kibana
+    state: stoped
+
+- name: restart kibana
+  service:
+    name: kibana
+    state: restarted

@@ -1,0 +1,32 @@
+---
+- name: Add terraform (1)
+  copy:
+    src: files/terraform_proxmox/terraform
+    dest: /usr/local/bin/terraform
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Add terraform-provider-proxmox (2)
+  copy:
+    src: files/terraform_proxmox/terraform-provider-proxmox
+    dest: /usr/local/bin/terraform-provider-proxmox
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Add terraform-provisioner-proxmox (3)
+  copy:
+    src: files/terraform_proxmox/terraform-provisioner-proxmox
+    dest: /usr/local/bin/terraform-provisioner-proxmox
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Add terraform file
+  copy:
+    src: files/UbuntuProxmox_ci
+    dest: /home/ubuntu/
+    owner: root
+    group: root
+    mode: '0755'

@@ -1,0 +1,31 @@
+---
+- name: Download jenkins repo
+  shell: wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add - 
+
+- name: sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ >> /etc/apt/sources.list'
+  shell: sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ >> /etc/apt/sources.list'
+
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Install jenkins
+  shell: sudo apt-get install jenkins -y
+
+- name: Config Path
+  copy:
+    src: files/default
+    dest: /etc/nginx/sites-available/
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: Install plugin
+  community.general.jenkins_plugin:
+    name: build-pipeline-plugin
+    url_username: admin
+    url_password: "2508"
+    url: http://192.168.60.39

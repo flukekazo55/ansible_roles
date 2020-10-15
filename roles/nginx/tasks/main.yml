@@ -1,0 +1,4 @@
+---
+# tasks file for nginx
+- include_tasks: install_nginx.yaml
+- include_tasks: change_index.yaml

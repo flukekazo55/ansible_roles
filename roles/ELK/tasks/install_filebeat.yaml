@@ -1,0 +1,27 @@
+---
+- name: Install Filebeat  
+  apt:
+    name: filebeat 
+
+- name: Change Config filebeat.yml
+  copy:
+    src: files/filebeat.yml
+    dest: /etc/logstash/conf.d/
+
+- name: sudo filebeat modules enable system
+  shell: sudo filebeat modules enable system
+
+- name: sudo filebeat modules list
+  shell: sudo filebeat modules list
+
+- name: sudo filebeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=["localhost:9200"]'
+  shell: sudo filebeat setup --template -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=["localhost:9200"]'
+
+- name: sudo filebeat setup -e -E output.logstash.enabled=false -E output.elasticsearch.hosts=['localhost:9200'] -E setup.kibana.host=localhost:5601
+  shell: sudo filebeat setup -e -E output.logstash.enabled=false -E output.elasticsearch.hosts=['localhost:9200'] -E setup.kibana.host=localhost:5601
+
+- name: start filebeat 
+  service:
+    name: filebeat 
+    state: started 
+    enabled: true

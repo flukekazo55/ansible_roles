@@ -1,0 +1,51 @@
+---
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Wait for APT Lock
+  shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+
+- name: Remove apt lock file
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: yes
+
+- name: Adds Python MySQL support on Debian/Ubuntu
+  apt: 
+    pkg: python-mysqldb 
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Adds Python MySQL support on RedHat/CentOS
+  yum: 
+    name: MySQL-python 
+    state: present
+  when: ansible_os_family == 'RedHat' 
+
+- name: Install apache2 
+  apt: 
+    name: 
+      - apache2 
+      - apache2-utils
+
+- name: Enable apache2 service
+  service: 
+    name: apache2 
+    state: started
+    enabled : true
+
+- name: Change Owner www-data with apache2 html path
+  file:
+    path: /var/www/html/
+    state: directory
+    recurse: yes
+    owner: www-data
+    group: www-data

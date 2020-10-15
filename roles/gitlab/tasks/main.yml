@@ -1,0 +1,4 @@
+---
+# tasks file for roles/gitlab
+- import_tasks: install_gitlab.yaml
+- import_tasks: config_gitlab.yaml

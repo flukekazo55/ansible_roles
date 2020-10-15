@@ -1,0 +1,45 @@
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: yes
+
+- name: Download repo
+  shell: wget https://releases.hashicorp.com/vault/1.5.3/vault_1.5.3_linux_amd64.zip
+
+- name: Unzip repo
+  shell: sudo unzip vault_1.5.3_linux_amd64.zip
+
+- name: mv consul /usr/bin
+  shell: sudo mv vault /usr/bin
+
+- name: mkdir /etc/vault
+  shell: mkdir /etc/vault
+
+- name: Create Vault service config
+  copy:
+    src: files/config.hcl
+    dest: /etc/vault/config.hcl
+
+- name: Create Vault service
+  copy:
+    src: files/vault.service
+    dest: /etc/systemd/system/vault.service
+
+- name: Daemon-reload
+  shell:  systemctl daemon-reload
+
+- name: Enabled vault
+  service:
+    name: vault
+    state: restarted
+    enabled: yes
+
+- name: vault operator init > /path_storage_token
+  shell: vault operator init > /valut_token
+

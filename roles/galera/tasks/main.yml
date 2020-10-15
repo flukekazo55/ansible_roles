@@ -1,0 +1,6 @@
+---
+# tasks file for roles/galera
+- import_tasks: install_maraidb.yaml
+- import_tasks: config_node.yaml
+- import_tasks: start_cluster.yaml
+- import_tasks: install_php.php

@@ -1,0 +1,6 @@
+---
+# tasks file for roles/ELK
+- import_tasks: install_elasticsearch.yaml
+- import_tasks: install_kibana.yaml
+- import_tasks: install_logstash.yaml
+# - import_tasks: install_filebeat.yaml

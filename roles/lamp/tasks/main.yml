@@ -1,0 +1,5 @@
+---
+# tasks file for lamp
+- import_tasks: install_apache2.yaml
+- import_tasks: install_mariadb.yaml
+- import_tasks: install_php7-2.yaml

@@ -1,0 +1,4 @@
+---
+# tasks file for roles/jenkins
+- import_tasks: install_java.yaml
+- import_tasks: install_jenkins.yaml

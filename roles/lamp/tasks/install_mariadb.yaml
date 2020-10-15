@@ -1,0 +1,63 @@
+---
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Remove apt lock file
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: yes
+
+- name : Install mariadb
+  apt:
+    name: 
+      - mariadb-server
+      - mariadb-client
+      - python3-pymysql
+
+- name: Sets the root password 
+  mysql_user: 
+    name: root 
+    password: "2508"
+    host: localhost
+
+- name: Deletes anonymous MySQL server user for localhost
+  mysql_user: 
+    name: "" 
+    state: absent
+
+- name: Secures the MySQL root user for IPV6 localhost (::1)
+  mysql_user: 
+    name: root 
+    password: "2508" 
+    host: "::1"
+
+- name: Secures the MySQL root user for IPV4 localhost (127.0.0.1)
+  mysql_user: 
+    name: root 
+    password: "2508" 
+    host: "127.0.0.1"
+
+- name: Secures the MySQL root user for localhost domain (localhost)
+  mysql_user: 
+    name: "root" 
+    password: "2508" 
+    host: "localhost"
+
+- name: Removes the MySQL test database
+  mysql_db: 
+    db: test 
+    state: absent
+    
+- name: Enable Mariadb service
+  service: 
+    name: mariadb 
+    state: started
+    enabled : true
