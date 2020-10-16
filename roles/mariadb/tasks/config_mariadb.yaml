@@ -1,0 +1,49 @@
+---
+# - name: set root password
+#   shell: sudo mysql -u {{ mysql_user }} -e "ALTER USER "{{ mysql_user }}"@'localhost' IDENTIFIED BY "{{ mysql_password }}";"
+#   notify: restart mariadb
+- name: Sets the root password 
+  mysql_user: 
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    host: localhost
+
+- name: Deletes anonymous MySQL server user for localhost
+  mysql_user: 
+    name: "" 
+    state: absent
+
+- name: Secures the MySQL root user for IPV6 localhost (::1)
+  mysql_user: 
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    host: "::1"
+
+- name: Secures the MySQL root user for IPV4 localhost (127.0.0.1)
+  mysql_user: 
+    name: "{{ mysql_user }}" 
+    password: "{{ mysql_password }}"
+    host: "127.0.0.1"
+
+- name: Secures the MySQL root user for localhost domain (localhost)
+  mysql_user: 
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    host: "localhost"
+
+- name: Removes the MySQL test database
+  mysql_db: 
+    db: test 
+    state: absent
+
+- name: Sets the root password  (1)
+  shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e  "SET old_passwords=0;"
+
+- name: Sets the root password  (2)
+  shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e  "GRANT SELECT ON db.* TO {{ mysql_user }}@localhost IDENTIFIED BY '{{ mysql_password }}';"
+
+- name: Sets the root password FLUSH PRIVILEGES (3) 
+  shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e "FLUSH PRIVILEGES;"
+  notify: restart mariadb
+
+

@@ -69,3 +69,4 @@
 
 - name: Config FLUSH PRIVILEGES
   shell: mysql -u root -p2508 -e "FLUSH PRIVILEGES;"
+  notify: restart apache2

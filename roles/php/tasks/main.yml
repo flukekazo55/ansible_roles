@@ -1,0 +1,5 @@
+---
+# tasks file for roles/php
+- import_tasks: install_php5.6.yaml
+- import_tasks: install_php7.2.yaml
+- import_tasks: install_php_lastest.yaml

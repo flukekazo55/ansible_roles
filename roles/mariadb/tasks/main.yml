@@ -1,0 +1,4 @@
+---
+# tasks file for roles/mariadb
+- import_tasks: install_mariadb.yaml
+- import_tasks: config_mariadb.yaml

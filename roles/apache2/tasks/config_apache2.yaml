@@ -1,0 +1,14 @@
+---
+- name: Enable apache2 service
+  service: 
+    name: apache2 
+    state: started
+    enabled : true
+
+- name: Change Owner www-data with apache2 html path
+  file:
+    path: /var/www/html/
+    state: directory
+    recurse: yes
+    owner: www-data
+    group: www-data

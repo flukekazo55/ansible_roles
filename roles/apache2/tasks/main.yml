@@ -1,0 +1,4 @@
+---
+# tasks file for roles/apache2
+- import_tasks: install_apache2.yaml
+- import_tasks: config_apache2.yaml

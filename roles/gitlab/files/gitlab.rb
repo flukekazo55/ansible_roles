@@ -1,4 +1,4 @@
-external_url 'http://192.168.60.38'
+external_url 'http://x.x.x.x'
 gitlab_rails['object_store']['enabled'] = false
 gitlab_rails['object_store']['connection'] = {}
 gitlab_rails['object_store']['storage_options'] = {}
@@ -14,8 +14,8 @@ gitlab_rails['object_store']['objects']['terraform_state']['bucket'] = nil
 gitlab_rails['smtp_enable'] = true
 gitlab_rails['smtp_address'] = "smtp.gmail.com"
 gitlab_rails['smtp_port'] = 587
-gitlab_rails['smtp_user_name'] = "@gmail.com"
-gitlab_rails['smtp_password'] = ""
+gitlab_rails['smtp_user_name'] = "xxxx@gmail.com"
+gitlab_rails['smtp_password'] = "xxxx"
 gitlab_rails['smtp_domain'] = "smtp.gmail.com"
 gitlab_rails['smtp_authentication'] = "login"
 gitlab_rails['smtp_enable_starttls_auto'] = true
