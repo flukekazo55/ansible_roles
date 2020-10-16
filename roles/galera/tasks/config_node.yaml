@@ -3,16 +3,16 @@
   copy:
     src: files/master_node.cnf
     dest: /etc/mysql/conf.d/galera.cnf
-  when: ansible_ssh_host=="192.168.60.38"  
+  when: ansible_ssh_host=="{{ node1 }}"  
 
 - name: Config slave node1
   copy:
     src: files/slave_node1.cnf
     dest: /etc/mysql/conf.d/galera.cnf
-  when: ansible_ssh_host=="192.168.60.39"  
+  when: ansible_ssh_host=="{{ node2 }}"  
 
 - name: Config slave node2
   copy:
     src: files/slave_node2.cnf
     dest: /etc/mysql/conf.d/galera.cnf
-  when: ansible_ssh_host=="192.168.60.40"  
+  when: ansible_ssh_host=="{{ node3 }}"  

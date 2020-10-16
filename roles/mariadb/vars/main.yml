@@ -1,4 +1,4 @@
 ---
 # vars file for roles/mariadb
-mysql_user: "root"
-mysql_password: "2508"
+mysql_user: root
+mysql_password: 2508

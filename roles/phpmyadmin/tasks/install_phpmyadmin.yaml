@@ -26,21 +26,21 @@
   debconf: 
     name: phpmyadmin 
     question: 'phpmyadmin/app-password-confirm' 
-    value: '2508' 
+    value: '{{ mysql_password }}' 
     vtype: 'password'
 
 - name: debconf for pma
   debconf: 
     name: phpmyadmin 
     question: 'phpmyadmin/mysql/admin-pass' 
-    value: '2508' 
+    value: '{{ mysql_password }}' 
     vtype: 'password'
 
 - name: debconf for pma
   debconf: 
     name: phpmyadmin 
     question: 'phpmyadmin/mysql/app-pass' 
-    value: '2508' 
+    value: '{{ mysql_password }}' 
     vtype: 'password'
 
 - name: debconf for pma
@@ -64,9 +64,6 @@
 - name: Include /etc/phpmyadmin/apache.conf
   shell: echo "Include /etc/phpmyadmin/apache.conf" >> /etc/apache2/apache2.conf
 
-# - name: Config mysql_native_password
-#   shell: mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '2508';"
-
 - name: Config FLUSH PRIVILEGES
-  shell: mysql -u root -p2508 -e "FLUSH PRIVILEGES;"
+  shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e "FLUSH PRIVILEGES;"
   notify: restart apache2

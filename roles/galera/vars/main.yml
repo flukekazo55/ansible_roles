@@ -1,0 +1,10 @@
+---
+node1: "192.168.60.38"
+node2: "192.168.60.39"
+node3: "192.168.60.40"
+node1_user: "root"
+node2_user: "root"
+node3_user: "root"
+node1_password: "2508"
+node2_password: "2508"
+node3_password: "2508"
