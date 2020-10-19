@@ -6,46 +6,46 @@
 
 - name: create master galera node
   shell: sudo galera_new_cluster
-  when: ansible_ssh_host=="{{ node1 }}"  
+  when: ansible_ssh_host==node1 
 
 - name: set cluster size
   shell: mysql -u {{ node1_user }} -p{{ node1_password }} -e "SHOW STATUS LIKE 'wsrep_cluster_size'"
-  when: ansible_ssh_host=="{{ node1 }}"
+  when: ansible_ssh_host==node1
 
 - name: create slave galera node1
   shell: sudo systemctl start mysql
-  when: ansible_ssh_host=="{{ node2 }}"  
+  when: ansible_ssh_host==node2 
 
 - name: create slave galera node1
   shell: mysql -u {{ node2_user }} -p{{ node2_password }} -e "SHOW STATUS LIKE 'wsrep_cluster_size'"
-  when: ansible_ssh_host=="{{ node2 }}"  
+  when: ansible_ssh_host==node2 
 
 - name: create slave galera node2
   shell: sudo systemctl start mysql
-  when: ansible_ssh_host=="{{ node3 }}"  
+  when: ansible_ssh_host==node3 
 
 
 - name: create slave galera node2
   shell:  mysql -u {{ node3_user }} -p{{ node3_password }} -e "SHOW STATUS LIKE 'wsrep_cluster_size'"
-  when: ansible_ssh_host=="{{ node3 }}"  
+  when: ansible_ssh_host==node3 
 
 
 - name: CREATE DATABASE playground
   shell: mysql -u {{ node1_user }} -p{{ node1_password }} -e 'CREATE DATABASE playground';
-  when: ansible_ssh_host=="{{ node1 }}"  
+  when: ansible_ssh_host==node1 
 
 - name: CREATE DATABASE playground.equipment
   shell: mysql -u {{ node1_user }} -p{{ node1_password }} -e 'CREATE TABLE playground.equipment ( id INT NOT NULL AUTO_INCREMENT, type VARCHAR(50), quant INT, color VARCHAR(25), PRIMARY KEY(id));'
-  when: ansible_ssh_host=="{{ node1 }}"  
+  when: ansible_ssh_host==node1 
 
 - name: Insert data playground.equipment
   shell: mysql -u {{ node1_user }} -p{{ node1_password }} -e 'INSERT INTO playground.equipment (type, quant, color) VALUES ("slide", 2, "blue");'
-  when: ansible_ssh_host=="{{ node1 }}"  
+  when: ansible_ssh_host==node1 
 
 - name: Insert data playground.equipment (2)
   shell: mysql -u {{ node2_user }} -p{{ node2_password }} -e 'INSERT INTO playground.equipment (type, quant, color) VALUES ("swing", 10, "yellow");'
-  when: ansible_ssh_host=="{{ node2 }}" 
+  when: ansible_ssh_host==node2
 
 - name: Insert data playground.equipment (3)
   shell: mysql -u {{ node3_user }} -p{{ node3_password }} -e 'INSERT INTO playground.equipment (type, quant, color) VALUES ("seesaw", 3, "green");'
-  when: ansible_ssh_host=="{{ node3 }}" 
+  when: ansible_ssh_host==node3

@@ -64,6 +64,8 @@
 - name: Include /etc/phpmyadmin/apache.conf
   shell: echo "Include /etc/phpmyadmin/apache.conf" >> /etc/apache2/apache2.conf
 
-- name: Config FLUSH PRIVILEGES
+- name: UPDATE mysql.user SET Password=PASSWORD("EnterYourPasswordHere") WHERE User="root";
+  shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e  "GRANT SELECT ON db.* TO phpmyadmin@localhost IDENTIFIED BY '{{ mysql_password }}';"
+
+- name: mysql FLUSH PRIVILEGES
   shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e "FLUSH PRIVILEGES;"
-  notify: restart apache2

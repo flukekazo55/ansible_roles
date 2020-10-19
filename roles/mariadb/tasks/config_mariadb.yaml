@@ -1,13 +1,4 @@
 ---
-# - name: set root password
-#   shell: sudo mysql -u {{ mysql_user }} -e "ALTER USER "{{ mysql_user }}"@'localhost' IDENTIFIED BY "{{ mysql_password }}";"
-#   notify: restart mariadb
-- name: Sets the root password 
-  mysql_user: 
-    name: "{{ mysql_user }}"
-    password: "{{ mysql_password }}"
-    host: localhost
-
 - name: Deletes anonymous MySQL server user for localhost
   mysql_user: 
     name: "" 
@@ -44,6 +35,8 @@
 
 - name: Sets the root password FLUSH PRIVILEGES (3) 
   shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e "FLUSH PRIVILEGES;"
-  notify: restart mariadb
 
-
+- name: restart mariadb
+  service:
+    name: mariadb
+    state: restarted

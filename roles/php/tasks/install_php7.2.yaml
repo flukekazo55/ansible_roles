@@ -56,7 +56,7 @@
   shell: sudo a2enmod proxy_fcgi setenvif 
   when: php_version == 7.2
 
-- name: Enable the /etc/apache2/conf-available/php{{ php_version }}-fpm.conf configuration file.
+- name: Enable the /etc/apache2/conf-available/php7.2-fpm.conf configuration file.
   shell: sudo a2enconf php{{ php_version }}-fpm
   notify: restart apache2
   when: 
