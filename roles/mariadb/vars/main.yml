@@ -1,4 +1,9 @@
 ---
-# vars file for roles/mariadb
+# admin user username (localhost)
 mysql_user: "root"
+# admin user password (localhost)
 mysql_password: "2508"
+# remote user username (access ip address)
+mysql_remote_user: "mysql_admin"
+# remote user password (access ip address)
+mysql_remote_password: "2508"

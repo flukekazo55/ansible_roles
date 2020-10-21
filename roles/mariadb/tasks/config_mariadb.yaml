@@ -1,39 +1,22 @@
 ---
-- name: Deletes anonymous MySQL server user for localhost
-  mysql_user: 
-    name: "" 
-    state: absent
-
-- name: Secures the MySQL root user for IPV6 localhost (::1)
-  mysql_user: 
-    name: "{{ mysql_user }}"
-    password: "{{ mysql_password }}"
-    host: "::1"
-
-- name: Secures the MySQL root user for IPV4 localhost (127.0.0.1)
-  mysql_user: 
-    name: "{{ mysql_user }}" 
-    password: "{{ mysql_password }}"
-    host: "127.0.0.1"
-
-- name: Secures the MySQL root user for localhost domain (localhost)
-  mysql_user: 
-    name: "{{ mysql_user }}"
-    password: "{{ mysql_password }}"
-    host: "localhost"
-
-- name: Removes the MySQL test database
-  mysql_db: 
-    db: test 
-    state: absent
+- name: All access mysql 
+  copy:
+    src: files/50-server.cnf
+    dest: /etc/mysql/mariadb.conf.d/50-server.cnf
 
 - name: Sets the root password  (1)
   shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e  "SET old_passwords=0;"
 
 - name: Sets the root password  (2)
-  shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e  "GRANT SELECT ON db.* TO {{ mysql_user }}@localhost IDENTIFIED BY '{{ mysql_password }}';"
+  shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e  "GRANT SELECT ON *.* TO {{ mysql_user }}@localhost IDENTIFIED BY '{{ mysql_password }}';"
 
-- name: Sets the root password FLUSH PRIVILEGES (3) 
+- name: Sets the remote user password  (1)
+  shell: mysql -u {{ mysql_user }} -p{{mysql_password }} -e  "CREATE OR REPLACE USER {{ mysql_remote_user }}@localhost IDENTIFIED BY '{{mysql_remote_password }}';"
+
+- name: Sets the remote user password  (2)
+  shell: mysql -u {{ mysql_user }} -p{{mysql_password }} -e  "GRANT ALL PRIVILEGES ON *.* TO '{{ mysql_remote_user }}'@'%' IDENTIFIED BY '{{ mysql_remote_password }}';"
+
+- name: Sets the root password FLUSH PRIVILEGES
   shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} -e "FLUSH PRIVILEGES;"
 
 - name: restart mariadb

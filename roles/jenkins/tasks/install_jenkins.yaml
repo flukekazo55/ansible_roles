@@ -1,4 +1,7 @@
 ---
+- name: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys NO_PUBKEY 
+  shell: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FCEF32E745F2C3D5
+
 - name: Download jenkins repo
   shell: wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add - 
 

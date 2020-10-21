@@ -1,14 +1,22 @@
 ---
 # tasks file for roles/ansible
-- name: Download jenkins repo
-  shell: wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add - 
-
-- name: sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ >> /etc/apt/sources.list'
-  shell: sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ >> /etc/apt/sources.list'
-
 - name: Update APT Cache
   apt:
     update_cache: yes
+    force_apt_get: yes
+
+- name: Wait for APT Lock
+  shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+
+- name: Remove apt lock file
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
     force_apt_get: yes
 
 - name: Install software-properties-common
@@ -17,6 +25,10 @@
 
 - name: sudo apt-add-repository --yes --update ppa:ansible/ansible
   shell: sudo apt-add-repository --yes --update ppa:ansible/ansible
+
+- name: Install ansible
+  apt:
+    name: ansible
 
 - name: Add id_rsa file
   copy:

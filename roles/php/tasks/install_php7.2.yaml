@@ -58,7 +58,13 @@
 
 - name: Enable the /etc/apache2/conf-available/php7.2-fpm.conf configuration file.
   shell: sudo a2enconf php{{ php_version }}-fpm
-  notify: restart apache2
   when: 
   - php_version == 7.2 
-  - lamp == "yes"
+
+- name: Restart apache2
+  service:
+    name: apache2
+    state: restarted
+  when: 
+    - php_version == 7.2 
+    - lamp == "yes"
