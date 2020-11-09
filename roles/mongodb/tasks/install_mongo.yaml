@@ -43,8 +43,8 @@
 - name: Create user with password .
   community.mongodb.mongodb_user:
     database: admin
-    name: admin
-    password: 2508
+    name: '{{ mongo_user }}'
+    password: '{{ mongo_password }}'
     roles: root
     state: present
 

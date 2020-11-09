@@ -1,5 +1,5 @@
 variable "pm_api_url" {
-  default = "https://192.168.2.248:8006/api2/json"
+  default = "https://x.x.x.x:8006/api2/json"
 }
 
 variable "pm_user" {
@@ -7,7 +7,7 @@ variable "pm_user" {
 }
 
 variable "pm_password" {
-  default = "ClickNext@UAT"
+  default = "p@ssword"
 }
 
 variable "ssh_key" {

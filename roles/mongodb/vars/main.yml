@@ -1,0 +1,4 @@
+# mongodb user login
+mongo_user: "mongodb_admin"
+# mongodb password login
+mongo_password: "2508"

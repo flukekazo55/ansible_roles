@@ -33,25 +33,10 @@
     state: started
     enabled: yes
 
-- name: Change redis2 conf
+- name: Change redis conf
   copy:
-    src: files/redis2.conf
+    src: files/redis.conf
     dest: /etc/redis/redis.conf
-  when: ansible_ssh_host=="192.168.60.38"
-  notify: restart redis
-
-- name: Change redis2 conf
-  copy:
-    src: files/redis2.conf
-    dest: /etc/redis/redis.conf
-  when: ansible_ssh_host=="192.168.60.39"
-  notify: restart redis
-
-- name: Change redis3 conf
-  copy:
-    src: files/redis3.conf
-    dest: /etc/redis/redis.conf
-  when: ansible_ssh_host=="192.168.60.40"
   notify: restart redis
 
 - name: wget http://download.redis.io/redis-stable.tar.gz

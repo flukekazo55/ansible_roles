@@ -67,14 +67,14 @@
 
 - name: Change ganesha.conf
   copy:
-    src: files/gluster1.conf
+    src: files/gluster_node1.conf
     dest: /etc/ganesha/ganesha.conf
-  when: ansible_ssh_host=="192.168.60.38"
+  when: ansible_ssh_host==gluster_node1
   notify: restart nfs-ganesha
 
 - name: Change ganesha.conf
   copy:
-    src: files/gluster2.conf
+    src: files/gluster_node2.conf
     dest: /etc/ganesha/ganesha.conf
-  when: ansible_ssh_host=="192.168.60.39"  
+  when: ansible_ssh_host==gluster_node2
   notify: restart nfs-ganesha

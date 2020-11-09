@@ -1,2 +1,4 @@
 ---
 # vars file for glusterFS
+gluster_node1: "192.168.60.38"
+gluster_node2: "192.168.60.39"

@@ -3,18 +3,18 @@
   apt:
     name: kibana
 
-- name: stop kibana
+- name: start kibana
   service:
     name: kibana
-    state: stopped
-    # enabled: true
+    state: started
+    enabled: true
 
-# - name: Change Config Nginx
-#   copy:
-#     src: files/default
-#     dest: /etc/nginx/sites-available/ 
+- name: Change Config Nginx
+  copy:
+    src: files/default
+    dest: /etc/nginx/sites-available/ 
 
-# - name: restart nginx
-#   service:
-#     name: nginx
-#     state: restarted
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted

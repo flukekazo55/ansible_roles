@@ -21,8 +21,8 @@
 - name: sudo -u logstash /usr/share/logstash/bin/logstash --path.settings /etc/logstash -t
   shell: sudo -u logstash /usr/share/logstash/bin/logstash --path.settings /etc/logstash -t
 
-- name: stop logstash
+- name: start logstash
   service:
     name: logstash
-    state: stopped
-    # enabled: true
+    state: started
+    enabled: true
